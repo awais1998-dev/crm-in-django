@@ -1,0 +1,116 @@
+{% extends 'layout/base.html' %}
+
+{% block content %}
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Customers List</h5>
+        <div class="table-responsive">
+            <div id="zero_config_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
+                <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                        <a href="{% url 'add_customer' %}" class="btn btn-primary">Add Customer</a>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <div id="zero_config_filter" class="dataTables_filter">
+                            <form>
+                            <label>Search:
+                                <input type="search"
+                                       class="form-control form-control-sm"
+                                       name="q"
+                                       placeholder="Search"
+                                       aria-controls="zero_config"></label>
+                                <button type="submit" class="btn btn-primary btn-sm">Search</button>
+                                </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table id="zero_config" class="table table-striped table-bordered dataTable" role="grid"
+                               aria-describedby="zero_config_info">
+                            <thead>
+                            <tr role="row">
+                                <th class="sorting_asc" tabindex="0" aria-controls="zero_config" rowspan="1" colspan="1"
+                                    aria-sort="ascending" aria-label="Name: activate to sort column descending"
+                                    style="width: 123.76px;">Name
+                                </th>
+                                <th class="sorting" tabindex="0" aria-controls="zero_config" rowspan="1" colspan="1"
+                                    aria-label="Position: activate to sort column ascending" style="width: 204.646px;">
+                                    Email
+                                </th>
+                                <th class="sorting" tabindex="0" aria-controls="zero_config" rowspan="1" colspan="1"
+                                    aria-label="Office: activate to sort column ascending" style="width: 91.9583px;">
+                                    Phone
+                                </th>
+                                <th class="sorting" tabindex="0" aria-controls="zero_config" rowspan="1" colspan="1"
+                                    aria-label="Office: activate to sort column ascending" style="width: 91.9583px;">
+                                    Actions
+                                </th>
+                            </tr>
+
+                            </thead>
+                            <tbody>
+                            {% for customer in customers %}
+                            <tr role="row" class="odd">
+                                <td class="sorting_1">{{ customer.name }}</td>
+                                <td>{{ customer.email }}</td>
+                                <td>{{ customer.phone }}</td>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-2">
+                                            <a href="{% url 'delete_customer' customer.id %}">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </a>
+                                        </div>
+                                        <div class="col-2">
+                                            <a href="{% url 'edit_customer' customer.id %}">
+                                                <i class="pl-5 fas fa-edit"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-5">
+                        <div class="dataTables_info" id="zero_config_info" role="status" aria-live="polite">
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-7">
+                        <div class="dataTables_paginate paging_simple_numbers" id="zero_config_paginate">
+                            <ul class="pagination">
+                                {% if customers.has_previous %}
+                                <li class="paginate_button page-item previous" id="zero_config_previous"><a
+                                        href="{% url 'customer_list' %}?page={{customers.previous_page_number}}"
+                                        aria-controls="zero_config" data-dt-idx="0" tabindex="0"
+                                        class="page-link">Previous</a></li>
+                                {% endif %}
+                                {% for n in customers.paginator.page_range %}
+                                <li class="paginate_button page-item {% if n == customers.number %}active{% endif %}">
+                                    <a href="{% url 'customer_list' %}?page={{n}}" aria-controls="zero_config" data-dt-idx="1" tabindex="0"
+                                       class="page-link">{{ n }}</a>
+                                </li>
+                                {% endfor %}
+                                {% if customers.has_next %}
+                                <li class="paginate_button page-item next" id="zero_config_next">
+                                    <a href="{% url 'customer_list' %}?page={{ customers.next_page_number }}"
+                                       aria-controls="zero_config" data-dt-idx="7" tabindex="0"
+                                       class="page-link">Next</a>
+                                </li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
